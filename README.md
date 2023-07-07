@@ -22,8 +22,9 @@ ffmpeg -i in.wav \
 -map "[BR]" back_right.wav
 ```
 
-But I wanted way to check on the channel layout and to get the named
-channels without a lot of shell script so here's this tool.
+I can't remember which channels are present in each layout, though.
+You can get the list of layouts with `ffmpeg -layouts` but I thought
+it'd be nice to have a tool that puts it all together in one shot.
 
 If you run:
 
@@ -31,8 +32,9 @@ If you run:
 fflayout in.wav
 ```
 
-```
 You'll receive output like:
+
+```
 channel count: 6
 channel order: native
 channel layout: 5.1
@@ -77,11 +79,13 @@ and CSV output with the `--csv` flag:
 "channel_5","BR"
 ```
 
-and finally if you're super lazy, `--shell`, assumes you're using a POSIX shell
-(I've broken this onto multiple lines for legibility, actual output is all one line):
+and finally if you're super lazy: `--shell` will generate a shell command for splitting the
+output into separate files. This assumes you're using a POSIX shell.
+
+(I've broken this output onto multiple lines for legibility, actual output is all one line):
 
 ```
-
+# result from running fflayout --shell test.wav
 ffmpeg -i 'test.wav' \
   -filter_complex "[0:a:0]channelsplit=channel_layout=5.1[FL][FR][FC][LFE][BL][BR]" \
   -map '[FL]' 'FL.wav' \
@@ -109,8 +113,6 @@ as an extra parameter after the filename:
 fflayout test.mkv 0 # grabs the first audio track
 fflayout test.mkv 1 # grabs the second audio track
 ```
-
-So now I can take test files and split them up
 
 # LICENSE
 
