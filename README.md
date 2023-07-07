@@ -114,6 +114,15 @@ fflayout test.mkv 0 # grabs the first audio track
 fflayout test.mkv 1 # grabs the second audio track
 ```
 
+An important thing to note is the channel order is usually going to be the order
+that channels are decoded as internally by ffmpeg. If you're trying to say,
+use libopus directly to decode a surround-sound Opus file, that uses a different
+channel ordering. ffmpeg abstracts all that away and remaps Opus channel ordering
+into ffmpeg's ordering.
+
+The main use of this tool is to pair it with ffmpeg, the channel names and ordering
+will all match up correctly as long as you do that.
+
 # LICENSE
 
 BSD Zero Clause, see file LICENSE.
